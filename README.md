@@ -36,7 +36,9 @@ npm install @babel/plugin-transform-object-rest-spread --save-dev
 npm install svgo@2 --save-dev
 ```
 
-## Виконання
+# Виконання
+
+## Варіант 1
 
 ```jsx
 componentDidMount() {
@@ -64,3 +66,40 @@ componentDidMount() {
 завантаження контактів з локального сховища при завантаженні застосунку та
 збереження контактів у локальному сховищі при кожному оновленні стану. Таким
 чином, дані про контакти будуть зберігатися між сесіями використання застосунку.
+
+## Варіант 2
+
+```jsx
+componentDidUpdate(prevProps, prevState) {
+  if (this.state.contacts !== prevState.contacts) {
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  }
+}
+
+componentDidMount() {
+  const savedContacts = localStorage.getItem('contacts');
+  if (savedContacts) {
+    this.setState({ contacts: JSON.parse(savedContacts) });
+  }
+}
+```
+
+## Настанови ментора
+
+В локальне сховище дані потрібно записувати в тому випадку, коли змінився масив
+з контактами (відбулося додавання/видалення контактів)
+
+```jsx
+componentDidUpdate(prevProps, prevState){
+// Збереження контактів у локальне сховище при оновленні стану
+ if(this.state.contacts !== prevState.contacts){
+  localStorage.setItem()
+ }
+}
+```
+
+- Вся основна логіка повинна бути в **`Арр`**.
+- Для додавання і видалення контактів використовувати значення від попереднього,
+  уникаємо мутацій стейту.
+- В компоненті **`ContactsList`** ніяких фільтрів не потрібно, лише створення
+  розмітки.
